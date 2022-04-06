@@ -20,12 +20,29 @@ async function run (){
         await client.connect();
         const database = client.db('drone_online_shop')
         const productCollection = database.collection('products')
-
+        const ordersCollection = database.collection('orders')
 
         // Get products
 
         app.get('/products', async (req, res)=>{
             const cursor = productCollection.find({});
+            const products = await cursor.toArray();
+            res.send(products)
+        })
+
+
+
+        // add orders 
+
+        // post orders
+        app.post('/orders', async(req, res)=>{
+            const order = req.body;
+            const result = await ordersCollection.insertOne(order)
+            res.json(result)
+        })
+
+        app.get('/orders', async (req, res)=>{
+            const cursor = ordersCollection.find({});
             const products = await cursor.toArray();
             res.send(products)
         })
