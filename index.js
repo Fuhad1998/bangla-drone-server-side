@@ -18,8 +18,17 @@ async function run (){
 
     try{
         await client.connect();
-        const database = client.db('online_shop')
+        const database = client.db('drone_online_shop')
         const productCollection = database.collection('products')
+
+
+        // Get products
+
+        app.get('/products', async (req, res)=>{
+            const cursor = productCollection.find({});
+            const products = await cursor.toArray();
+            res.send(products)
+        })
     }
     finally{
         // await client.close()
