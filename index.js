@@ -2,6 +2,7 @@ const express = require("express");
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()
 const cors = require('cors')
+const ObjectId = require('mongodb').ObjectId;
 
 
 const app = express();
@@ -30,6 +31,12 @@ async function run (){
             res.send(products)
         })
 
+        app.post('/products', async(req, res)=>{
+            const product = req.body;
+            const result = await productCollection.insertOne(product)
+            res.json(result)
+        })
+
 
 
         // add orders 
@@ -45,6 +52,14 @@ async function run (){
             const cursor = ordersCollection.find({});
             const products = await cursor.toArray();
             res.send(products)
+        })
+
+        app.delete('/orders/:id', async (req, res) =>{
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const result = await ordersCollection.deleteOne(query)
+            
+            res.json(result)
         })
     }
     finally{
