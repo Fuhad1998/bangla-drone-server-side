@@ -49,9 +49,17 @@ async function run (){
         })
 
         app.get('/orders', async (req, res)=>{
-            const cursor = ordersCollection.find({});
-            const products = await cursor.toArray();
-            res.send(products)
+            const email = req.query.email;
+            let query 
+            if (email){
+                query = {email}
+            }
+            else{
+                query={}
+            }
+            const cursor = ordersCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders)
         })
 
         app.delete('/orders/:id', async (req, res) =>{
