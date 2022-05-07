@@ -48,6 +48,7 @@ async function run (){
             res.json(result)
         })
 
+        // get orders
         app.get('/orders', async (req, res)=>{
             const email = req.query.email;
             let query 
@@ -63,6 +64,7 @@ async function run (){
         })
 
         // delate orders
+        // 
 
         app.delete('/orders/:id', async (req, res) =>{
             const id = req.params.id;
